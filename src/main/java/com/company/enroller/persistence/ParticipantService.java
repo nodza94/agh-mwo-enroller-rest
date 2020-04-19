@@ -41,4 +41,12 @@ public class ParticipantService {
 		
 	}
 
+	public Participant update(Participant participant) {
+		Transaction transaction = this.session.beginTransaction();
+		session.update(participant);
+		transaction.commit();
+		return participant;
+		
+	}
+
 }
