@@ -42,9 +42,10 @@ public class ParticipantRestController {
 	public ResponseEntity<?> registerParticipant(@RequestBody Participant participant){
 		Participant foundParticipant = participantService.findByLogin(participant.getLogin());
 		if (foundParticipant != null) {
-			return new ResponseEntity<String>(
-					"Unable to register. Participant with login " + participant.getLogin() + " already exists", HttpStatus.CONFLICT);
+			return new ResponseEntity<String>("Unable to register. Participant with login " 
+			+ participant.getLogin() + " already exists", HttpStatus.CONFLICT);
 		}
+		
 		participantService.add(participant);
 		return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
 	}
@@ -55,6 +56,7 @@ public class ParticipantRestController {
 	if (participant == null) { 
 	return new ResponseEntity(HttpStatus.NOT_FOUND);
 	} 
+	
 	participantService.delete(participant);
 	return new ResponseEntity<Participant>(participant, HttpStatus.OK); 
 	}
@@ -66,18 +68,21 @@ public class ParticipantRestController {
 	    if (foundParticipant == null) {
 	    	return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
+	    
 	    foundParticipant.setPassword(updateParticipant.getPassword());
 		participantService.update(foundParticipant);
 		return new ResponseEntity<Participant>(foundParticipant, HttpStatus.OK);
 	}
 	
+	//PREMIUM 4.3 List meetings for a user
 	@RequestMapping(value = "/{id}/meetings", method = RequestMethod.GET)
 	public ResponseEntity<?> getParticipantMeetings(@PathVariable("id") String login) {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
+		
 		Collection<Meeting> meetings = participant.getMeetings();
-		return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.NOT_FOUND);
-	} //
+		return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
+	}
 }
