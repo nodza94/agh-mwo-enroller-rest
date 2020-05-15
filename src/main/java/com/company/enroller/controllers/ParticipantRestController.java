@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.company.enroller.model.Meeting;
 import com.company.enroller.model.Participant;
 import com.company.enroller.persistence.ParticipantService;
 
@@ -69,4 +70,14 @@ public class ParticipantRestController {
 		participantService.update(foundParticipant);
 		return new ResponseEntity<Participant>(foundParticipant, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/{id}/meetings", method = RequestMethod.GET)
+	public ResponseEntity<?> getParticipantMeetings(@PathVariable("id") String login) {
+		Participant participant = participantService.findByLogin(login);
+		if (participant == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		Collection<Meeting> meetings = participant.getMeetings();
+		return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.NOT_FOUND);
+	} //
 }
