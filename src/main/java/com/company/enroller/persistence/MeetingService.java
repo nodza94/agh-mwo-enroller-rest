@@ -2,6 +2,8 @@ package com.company.enroller.persistence;
 
 import java.util.Collection;
 
+import javax.persistence.JoinColumn;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,7 +15,7 @@ import com.company.enroller.model.Participant;
 @Component("meetingService")
 public class MeetingService {
 
-	Session session;;
+	Session session;
 
 	public MeetingService() {
 		session = DatabaseConnector.getInstance().getSession();
@@ -50,5 +52,7 @@ public class MeetingService {
 		return meeting;
 		
 	}
+	
+	
 
 }

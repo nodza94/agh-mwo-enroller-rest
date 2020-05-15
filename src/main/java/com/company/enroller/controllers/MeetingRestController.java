@@ -1,6 +1,9 @@
 package com.company.enroller.controllers;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,12 +79,13 @@ public class MeetingRestController {
 	
 	 @RequestMapping(value = "/{id}/participants", method = RequestMethod.GET)
 	 public ResponseEntity<?> getMeetingParticipants(@PathVariable("id") long id){ 
-		 Meeting foundMeeting = meetingService.findById(id); 
-		 if (foundMeeting == null) {
+		 Meeting meeting = meetingService.findById(id); 
+		 Collection<Participant> participants = meeting.getParticipants();
+		 if (meeting == null) {
 			 return new ResponseEntity<Meeting>(HttpStatus.NOT_FOUND); 
 		 }
-		 foundMeeting.getParticipants(); 
-		 return new ResponseEntity<Meeting>(foundMeeting,HttpStatus.OK); 
+		
+		 return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
 	 }
 	 
 
